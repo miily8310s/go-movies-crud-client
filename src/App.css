@@ -11,6 +11,22 @@
   color: #333333;
 }
 
+.movieForm {
+  display: grid;
+  place-content: flex-start;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.movieFormColumn {
+  place-self: flex-start;
+}
+
+.formButton {
+  place-self: flex-start;
+}
+
 .movie {
   display: grid;
   grid-template-columns: repeat(5, 1fr);

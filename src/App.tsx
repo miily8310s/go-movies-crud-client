@@ -26,8 +26,7 @@ function App() {
   const { register, handleSubmit } = useForm<MovieFormValues>();
 
   const onClickAddMovie = async (data: MovieFormValues) => {
-    httpClient.post(`/movies`, data).then((res) => {
-      console.log(res);
+    httpClient.post(`/movies`, data).then(() => {
       mutate(movies);
     });
   };
@@ -52,12 +51,27 @@ function App() {
   }
   return (
     <div className="App movies">
-      <form onSubmit={handleSubmit((data) => onClickAddMovie(data))}>
-        <input {...register("Title")} placeholder="First name" />
-        <input {...register("Isbn")} placeholder="First name" />
-        <input {...register("Director.FirstName")} placeholder="First name" />
-        <input {...register("Director.LastName")} placeholder="First name" />
-        <input type="submit" />
+      <form
+        onSubmit={handleSubmit((data) => onClickAddMovie(data))}
+        className="movieForm"
+      >
+        <div className="movieFormColumn">
+          <div>
+            <label htmlFor="title">タイトル</label>
+            <input {...register("Title")} placeholder="タイトル" name="title" />
+          </div>
+          <div>
+            <label htmlFor="imdb">IMDbスコア</label>
+            <input {...register("Isbn")} placeholder="IMDbスコア" name="imdb" />
+          </div>
+        </div>
+        <div className="movieFormColumn">
+          <label htmlFor="imdb">監督名</label>
+          <input {...register("Director.FirstName")} placeholder="First name" />
+          <input {...register("Director.LastName")} placeholder="First name" />
+        </div>
+        <div></div>
+        <input type="submit" value="データ追加" className="formButton" />
       </form>
       <div className="movie">
         <div className="column">movie ID</div>
