@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const httpClient = axios.create({
+export const httpClient = axios.create({
   baseURL: "https://go-movies-crud-zyiz.onrender.com/",
   headers: {
     "Content-type": "application/json",
