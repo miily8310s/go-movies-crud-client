@@ -1,34 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import useSWR from "swr";
+import "./App.css";
+import { fetcher } from "./lib/fetcher";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+interface Movie {
+  ID: string;
+  Isbn: string;
+  Title: string;
+  Director: { FirstName: string; LastName: string };
 }
 
-export default App
+function App() {
+  const { data: movies, error, isLoading } = useSWR<Movie[]>("movies", fetcher);
+  if (isLoading) {
+    <div className="App">loading...</div>;
+  }
+  if (error) {
+    <div className="App">not connect to api...</div>;
+  }
+  return (
+    <div className="App movies">
+      <div className="movie">
+        <div className="column">movie ID</div>
+        <div className="column">movie title</div>
+        <div className="column">ISBN score</div>
+        <div className="column">Director</div>
+      </div>
+      {movies?.map((movie) => {
+        return (
+          <div className="movie" key={`${movie.ID}${movie.Title}`}>
+            <div>{movie.ID}</div>
+            <div>{movie.Title}</div>
+            <div>{movie.Isbn}</div>
+            <div>
+              {movie.Director.FirstName} {movie.Director.LastName}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+export default App;
